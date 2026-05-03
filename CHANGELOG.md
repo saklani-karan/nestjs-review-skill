@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-05-03
+
+### Fixed
+
+- Restructured the skill to **`skills/nestjs-pr-review/SKILL.md`** so **`gh skill install saklani-karan/nestjs-review-skill`** discovers the package (GitHub CLI expects `skills/*/SKILL.md` or equivalent layouts).
+- Updated README manual-install instructions to copy `skills/nestjs-pr-review/` after cloning; clarified repo vs skill directory layout.
+
 ## [1.0.0] — 2026-05-02
 
 Initial release.
@@ -38,5 +45,6 @@ Initial release.
 - Pure markdown skill — no shell injection, no forked-subagent execution. Verified portable across Claude Code and Cursor; expected to work on any Agent Skills–compatible host.
 - The `allowed-tools` frontmatter field is intentionally omitted so the agent's permission settings stay authoritative.
 
-[Unreleased]: https://github.com/<owner>/backend-pr-review/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/<owner>/backend-pr-review/releases/tag/v1.0.0
+[Unreleased]: https://github.com/saklani-karan/nestjs-review-skill/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/saklani-karan/nestjs-review-skill/releases/tag/v1.0.1
+[1.0.0]: https://github.com/saklani-karan/nestjs-review-skill/releases/tag/v1.0.0

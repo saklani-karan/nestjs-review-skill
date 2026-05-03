@@ -21,11 +21,13 @@ The skill scores code against twelve weighted rules covering transactional manag
 | 11 | Circular dependencies | -500 | +50 |
 | 12 | Dependency vs Composition | -50 | +50 |
 
-Rules #1 and #11 are critical and block the merge regardless of net score. See [`SKILL.md`](SKILL.md) for the full workflow and [`references/`](references/) for per-rule deep dives with examples, detection patterns, and edge cases.
+Rules #1 and #11 are critical and block the merge regardless of net score. See [`SKILL.md`](skills/nestjs-pr-review/SKILL.md) for the full workflow and [`references/`](skills/nestjs-pr-review/references/) for per-rule deep dives with examples, detection patterns, and edge cases.
 
 ## Install
 
-**GitHub repository:** [`saklani-karan/nestjs-review-skill`](https://github.com/saklani-karan/nestjs-review-skill). **Skill id** (the `name` field in [`SKILL.md`](SKILL.md), used for install paths and `gh skill update`): **`nestjs-pr-review`**.
+**GitHub repository:** [`saklani-karan/nestjs-review-skill`](https://github.com/saklani-karan/nestjs-review-skill). **Skill id** (the `name` field in [`SKILL.md`](skills/nestjs-pr-review/SKILL.md), used for install paths and `gh skill update`): **`nestjs-pr-review`**.
+
+The packaged skill lives at **`skills/nestjs-pr-review/SKILL.md`** so [`gh skill install`](https://cli.github.com/manual/gh_skill_install) can discover it (same layout as other GitHub skills publishers).
 
 The fastest path on any supported agent host is the GitHub CLI. If you don't have `gh` installed (or your version is older than 2.90.0), jump to [Installing the GitHub CLI](#installing-the-github-cli) first. Otherwise, pick the section for your agent below.
 
@@ -35,8 +37,8 @@ The fastest path on any supported agent host is the GitHub CLI. If you don't hav
 # Install for personal use (available across all your projects)
 gh skill install saklani-karan/nestjs-review-skill
 
-# Or pin to a specific version
-gh skill install saklani-karan/nestjs-review-skill@v1.0.0
+# Or pin to a specific release
+gh skill install saklani-karan/nestjs-review-skill@v1.0.1
 ```
 
 Skills land in `~/.claude/skills/nestjs-pr-review/` (the skill name from `SKILL.md`, not the repo folder name). Live change detection means edits take effect within the current session — no restart needed.
@@ -69,24 +71,27 @@ Run `gh skill install --help` for the full list of supported agents.
 
 ## Manual install (no GitHub CLI)
 
-If you can't or don't want to install `gh`, clone directly into the right folder for your agent.
+If you can't or don't want to install `gh`, clone the repository and copy the skill folder (`skills/nestjs-pr-review/`) into your agent’s skills directory. The repo root is not a skill by itself — only that subdirectory contains `SKILL.md` and `references/`.
 
 **Claude Code (personal):**
 ```bash
-git clone https://github.com/saklani-karan/nestjs-review-skill.git \
-  ~/.claude/skills/nestjs-pr-review
+git clone https://github.com/saklani-karan/nestjs-review-skill.git /tmp/nestjs-review-skill \
+  && cp -R /tmp/nestjs-review-skill/skills/nestjs-pr-review ~/.claude/skills/ \
+  && rm -rf /tmp/nestjs-review-skill
 ```
 
 **Claude Code (project, commit-friendly):**
 ```bash
-git clone https://github.com/saklani-karan/nestjs-review-skill.git \
-  .claude/skills/nestjs-pr-review
+git clone https://github.com/saklani-karan/nestjs-review-skill.git /tmp/nestjs-review-skill \
+  && cp -R /tmp/nestjs-review-skill/skills/nestjs-pr-review .claude/skills/ \
+  && rm -rf /tmp/nestjs-review-skill
 ```
 
 **Cursor:**
 ```bash
-git clone https://github.com/saklani-karan/nestjs-review-skill.git \
-  .cursor/skills/nestjs-pr-review
+git clone https://github.com/saklani-karan/nestjs-review-skill.git /tmp/nestjs-review-skill \
+  && cp -R /tmp/nestjs-review-skill/skills/nestjs-pr-review .cursor/skills/ \
+  && rm -rf /tmp/nestjs-review-skill
 ```
 
 The trade-off vs `gh skill install`: no provenance metadata, no `gh skill update` support. To update manually, `cd` into the skill folder and `git pull`.
@@ -113,8 +118,7 @@ gh skill update nestjs-pr-review
 # Update every gh-installed skill at once
 gh skill update --all
 
-# Manual install
-cd <path-to-skill> && git pull
+# Manual install (no `gh` metadata): re-run the [clone + copy steps](#manual-install-no-github-cli), or if you use a full git clone of this repo, `git pull` then copy `skills/nestjs-pr-review/` again.
 ```
 
 ## Installing the GitHub CLI
@@ -172,25 +176,31 @@ If your distro ships an older `gh`, use the official package list above instead 
 
 ## How it works
 
-This skill uses progressive disclosure: `SKILL.md` is a compact dispatcher with the scoring rubric, rule index, and review workflow. Each rule lives in its own self-contained reference file under `references/`, loaded only when scoring that rule.
+This skill uses progressive disclosure: `skills/nestjs-pr-review/SKILL.md` is a compact dispatcher with the scoring rubric, rule index, and review workflow. Each rule lives in its own self-contained reference file under `skills/nestjs-pr-review/references/`, loaded only when scoring that rule.
 
 ```
-nestjs-pr-review/
-├── SKILL.md
-└── references/
-    ├── 01-transactional-management.md
-    ├── 02-repository-definition.md
-    ├── 03-service-definition.md
-    ├── 04-event-emission.md
-    ├── 05-decorator-pattern.md
-    ├── 06-folder-structure.md
-    ├── 07-strategy-pattern.md
-    ├── 08-adapter-pattern.md
-    ├── 09-error-handling.md
-    ├── 10-logging.md
-    ├── 11-circular-dependencies.md
-    └── 12-dependency-vs-composition.md
+nestjs-review-skill/          ← Git repository (this repo)
+├── README.md
+├── LICENSE
+└── skills/
+    └── nestjs-pr-review/      ← skill package (what agents load)
+        ├── SKILL.md
+        └── references/
+            ├── 01-transactional-management.md
+            ├── 02-repository-definition.md
+            ├── 03-service-definition.md
+            ├── 04-event-emission.md
+            ├── 05-decorator-pattern.md
+            ├── 06-folder-structure.md
+            ├── 07-strategy-pattern.md
+            ├── 08-adapter-pattern.md
+            ├── 09-error-handling.md
+            ├── 10-logging.md
+            ├── 11-circular-dependencies.md
+            └── 12-dependency-vs-composition.md
 ```
+
+After `gh skill install`, your agent sees only the inner `nestjs-pr-review/` tree (with `SKILL.md` at the skill root).
 
 The rubric is opinionated for NestJS/TypeScript codebases but most rules transfer to other backend stacks (Spring, Django, Rails) with minor adjustments to the example code in the references.
 
@@ -199,8 +209,8 @@ The rubric is opinionated for NestJS/TypeScript codebases but most rules transfe
 The skill is intentionally readable and editable. To adapt for your team:
 
 1. Fork the repo.
-2. Edit `SKILL.md` to adjust scoring weights, merge thresholds, or output format.
-3. Edit individual files under `references/` to refine examples, detection patterns, or naming conventions for your stack.
+2. Edit `skills/nestjs-pr-review/SKILL.md` to adjust scoring weights, merge thresholds, or output format.
+3. Edit individual files under `skills/nestjs-pr-review/references/` to refine examples, detection patterns, or naming conventions for your stack.
 4. Republish under your own GitHub handle and install from there.
 
 ## Compatibility notes
