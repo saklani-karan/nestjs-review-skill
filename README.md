@@ -38,7 +38,7 @@ The fastest path on any supported agent host is the GitHub CLI. If you don't hav
 gh skill install saklani-karan/nestjs-review-skill
 
 # Or pin to a specific release
-gh skill install saklani-karan/nestjs-review-skill@v1.0.1
+gh skill install saklani-karan/nestjs-review-skill@v1.0.0
 ```
 
 Skills land in `~/.claude/skills/nestjs-pr-review/` (the skill name from `SKILL.md`, not the repo folder name). Live change detection means edits take effect within the current session — no restart needed.
