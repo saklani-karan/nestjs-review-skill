@@ -25,33 +25,35 @@ Rules #1 and #11 are critical and block the merge regardless of net score. See [
 
 ## Install
 
+**GitHub repository:** [`saklani-karan/nestjs-review-skill`](https://github.com/saklani-karan/nestjs-review-skill). **Skill id** (the `name` field in [`SKILL.md`](SKILL.md), used for install paths and `gh skill update`): **`nestjs-pr-review`**.
+
 The fastest path on any supported agent host is the GitHub CLI. If you don't have `gh` installed (or your version is older than 2.90.0), jump to [Installing the GitHub CLI](#installing-the-github-cli) first. Otherwise, pick the section for your agent below.
 
 ### Claude Code
 
 ```bash
 # Install for personal use (available across all your projects)
-gh skill install <owner>/backend-pr-review
+gh skill install saklani-karan/nestjs-review-skill
 
 # Or pin to a specific version
-gh skill install <owner>/backend-pr-review@v1.0.0
+gh skill install saklani-karan/nestjs-review-skill@v1.0.0
 ```
 
-Skills land in `~/.claude/skills/backend-pr-review/`. Live change detection means edits take effect within the current session — no restart needed.
+Skills land in `~/.claude/skills/nestjs-pr-review/` (the skill name from `SKILL.md`, not the repo folder name). Live change detection means edits take effect within the current session — no restart needed.
 
 For project-scoped install (commit it to your repo so teammates get it on clone):
 
 ```bash
-gh skill install <owner>/backend-pr-review --scope project
+gh skill install saklani-karan/nestjs-review-skill --scope project
 ```
 
 ### Cursor
 
 ```bash
-gh skill install <owner>/backend-pr-review --agent cursor
+gh skill install saklani-karan/nestjs-review-skill --agent cursor
 ```
 
-This drops the skill into `.cursor/skills/backend-pr-review/` in the current project. Cursor is project-scoped only — there's no global skills directory, so each project that needs the skill must install it.
+This drops the skill into `.cursor/skills/nestjs-pr-review/` in the current project. Cursor is project-scoped only — there's no global skills directory, so each project that needs the skill must install it.
 
 After install, run `Developer: Reload Window` from the command palette (or restart Cursor) so the skill is picked up.
 
@@ -60,7 +62,7 @@ After install, run `Developer: Reload Window` from the command palette (or resta
 `gh skill install` auto-detects most major hosts: GitHub Copilot, OpenClaw, Codex CLI, Gemini CLI, and others. Pass `--agent <name>` to target a specific one if you have multiple installed.
 
 ```bash
-gh skill install <owner>/backend-pr-review --agent <agent-name>
+gh skill install saklani-karan/nestjs-review-skill --agent <agent-name>
 ```
 
 Run `gh skill install --help` for the full list of supported agents.
@@ -71,20 +73,20 @@ If you can't or don't want to install `gh`, clone directly into the right folder
 
 **Claude Code (personal):**
 ```bash
-git clone https://github.com/<owner>/backend-pr-review \
-  ~/.claude/skills/backend-pr-review
+git clone https://github.com/saklani-karan/nestjs-review-skill.git \
+  ~/.claude/skills/nestjs-pr-review
 ```
 
 **Claude Code (project, commit-friendly):**
 ```bash
-git clone https://github.com/<owner>/backend-pr-review \
-  .claude/skills/backend-pr-review
+git clone https://github.com/saklani-karan/nestjs-review-skill.git \
+  .claude/skills/nestjs-pr-review
 ```
 
 **Cursor:**
 ```bash
-git clone https://github.com/<owner>/backend-pr-review \
-  .cursor/skills/backend-pr-review
+git clone https://github.com/saklani-karan/nestjs-review-skill.git \
+  .cursor/skills/nestjs-pr-review
 ```
 
 The trade-off vs `gh skill install`: no provenance metadata, no `gh skill update` support. To update manually, `cd` into the skill folder and `git pull`.
@@ -99,14 +101,14 @@ You should see the agent reference the rubric and produce a structured score wit
 
 - Confirm the skill is present at the expected path.
 - For Cursor, reload the window.
-- For Claude Code, ask "What skills are available?" — `backend-pr-review` should be listed.
+- For Claude Code, ask "What skills are available?" — `nestjs-pr-review` should be listed.
 - Make sure your prompt mentions PR review, code review, or audit — the skill description triggers on those phrases.
 
 ## Updating
 
 ```bash
 # With gh — checks all installed skills for upstream changes
-gh skill update backend-pr-review
+gh skill update nestjs-pr-review
 
 # Update every gh-installed skill at once
 gh skill update --all
@@ -173,7 +175,7 @@ If your distro ships an older `gh`, use the official package list above instead 
 This skill uses progressive disclosure: `SKILL.md` is a compact dispatcher with the scoring rubric, rule index, and review workflow. Each rule lives in its own self-contained reference file under `references/`, loaded only when scoring that rule.
 
 ```
-backend-pr-review/
+nestjs-pr-review/
 ├── SKILL.md
 └── references/
     ├── 01-transactional-management.md
